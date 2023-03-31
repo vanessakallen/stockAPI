@@ -1,0 +1,119 @@
+<!-- We interac with API by making requests to endpoints 
+http://mywebsite.com/create
+
+http://mywebsite.com/read 
+http://mywebsite.com/update
+http://mywebsite.com/delete
+
+
+http://api.marketstack.com/v1/eod
+? access_key = YOUR_ACCESS_KEY 
+& symbols = AAPL
+
+
+http://api.marketstack.com/v1/eod?access_key=7f57b03e875033aa5009c4d7463c73bc&symbols=AAPL -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Stock Search API</title>
+  </head>
+  <body>
+
+    <header>
+        <h1>Welcome to My Stock Search!</h1>
+        <h2>Enter a stock symbol below to see the stock's price</h2>
+    </header>
+
+    <div class="display-stocks">
+        <input type="text" id="symbolInput" placeholder="Enter stock symbol">
+        <button onclick="searchStock()">Search</button>
+        <div id="display"></div>
+    </div>
+
+    <footer>
+        <p>Vanessa Allen ʕ•́ᴥ•̀ʔっ</p>
+    </footer>
+
+    <script>
+      function searchStock() {
+        const accessKey = "7f57b03e875033aa5009c4d7463c73bc";
+        const symbol = document.getElementById("symbolInput").value.toUpperCase();
+        const url = `https://api.marketstack.com/v1/eod?access_key=${accessKey}&symbols=${symbol}`;
+
+        fetch(url)
+          .then(response => response.json())
+          .then((data) => {
+            const symbol = data.data[0].symbol;
+            const openPrice = data.data[0].open;
+            console.log(symbol, openPrice);
+            document.getElementById("display").innerText = `${symbol} is at ${openPrice}`;
+          })
+          .catch(() => {
+            console.log("Symbol not found.");
+            document.getElementById("display").innerText = "Symbol not found.";
+          });
+      }
+    </script>
+  </body>
+</html>
+
+<style>
+    html {
+        font-family: sans-serif;
+        background-color: rgb(169, 201, 255);
+    }
+
+    body {
+        margin: 3rem;
+    }
+
+    h1 {
+        color: rgb(46, 55, 70);
+        text-align: center;
+        margin-top: 3rem;
+    }
+
+    h2 {
+        color: rgb(68, 80, 102);
+        text-align: center;
+    }
+
+    .display-stocks {
+        text-align: center;
+    }
+
+    input {
+        border: 2px solid rgb(68, 80, 102);
+        border-radius: 5px;
+        background-color: rgb(227, 237, 255);
+    }
+
+    button {
+        border: 2px solid rgb(68, 80, 102);
+        border-radius: 5px;
+        background-color: rgb(206, 223, 254);
+    }
+
+    button:hover {
+        background-color: rgb(234, 241, 255);
+    }
+
+    #display {
+        margin-top: 2rem;
+        font-size: 2rem;
+        background-color: rgb(206, 223, 254);
+        border: 2px solid rgb(68, 80, 102);
+        border-radius: 5px;
+        padding: 1rem;
+        text-align: center;
+        color: rgb(46, 55, 70);
+    }
+
+    footer {
+        position: absolute;
+        bottom: 0;
+    }
+    
+</style>
